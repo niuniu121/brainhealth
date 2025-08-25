@@ -1,0 +1,90 @@
+/* ===== Global Reset & Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+/* 整页背景放在 body */
+body {
+  background: #325343;   /* 你的深绿色 */
+  color: #ffffff;        /* 默认字体颜色白 */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* 关键：不要用 flex 居中整个页面 */
+  display: block;
+}
+
+/* 链接样式（深绿背景上更清晰） */
+a {
+  color: #e6fff4;
+  text-decoration: none;
+  font-weight: 500;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* 图片默认不拉伸变形 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 统一按钮风格（可按需调整） */
+button {
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 0.6em 1.1em;
+  font: inherit;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+button:hover {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.7);
+}
+button:focus-visible {
+  outline: 3px solid rgba(255,255,255,.6);
+  outline-offset: 2px;
+}
+
+/* App 外壳：让中间路由页填满剩余空间（Header+Footer 之外） */
+#app {
+  min-height: 100%;
+  width: 100%;
+  /* 不要 max-width/padding 居中，否则会出现中间小盒子 */
+  padding: 0;
+}
+
+/* 通用居中容器（可在页面里使用） */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 标题默认样式（可选） */
+h1 { font-size: 2.5rem; line-height: 1.2; margin: 0 0 .6rem; }
+h2 { font-size: 1.5rem; line-height: 1.3; margin: 0 0 1.2rem; }
+
+/* 可选：滚动条颜色（Chrome/Edge） */
+:root {
+  scrollbar-color: rgba(255,255,255,.35) #325343;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar { height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.35); border-radius: 8px; }
+::-webkit-scrollbar-track { background: #325343; }

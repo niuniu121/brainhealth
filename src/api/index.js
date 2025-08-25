@@ -1,0 +1,27 @@
+async function request(url, opts) {
+    const r = await fetch(url, opts);
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+}
+
+const getJSON = (url) => request(url);
+const postForm = (url, formData) => request(url, { method: "POST", body: formData });
+
+export const api = {
+    health: () => getJSON("/health"),
+
+    randomTip: (mood) =>
+        getJSON(`/api/tips/random${mood ? `?mood=${encodeURIComponent(mood)}` : ""}`),
+
+    flipCards: (limit = 12) => getJSON(`/api/flip-cards?limit=${limit}`),
+
+    openMeteo: (lat, lon) => getJSON(`/api/open-meteo?lat=${lat}&lon=${lon}`),
+
+    speechAnalyze(file) {
+        const fd = new FormData();
+        fd.append("file", file, file?.name || "audio.wav");
+        return postForm("/api/speech/analyze", fd);
+    },
+};
+
+export default api;
