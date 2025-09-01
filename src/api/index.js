@@ -4,8 +4,11 @@ async function request(url, opts) {
     return r.json();
 }
 
-const getJSON = (url) => request(url);
-const postForm = (url, formData) => request(url, { method: "POST", body: formData });
+const BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
+const full = (path) => `${BASE}${path.startsWith('/') ? path : `/${path}`}`;
+
+const getJSON = (path) => request(full(path));
+const postForm = (path, formData) => request(full(path), { method: "POST", body: formData });
 
 export const api = {
     health: () => getJSON("/health"),
@@ -17,6 +20,7 @@ export const api = {
 
     openMeteo: (lat, lon) => getJSON(`/api/open-meteo?lat=${lat}&lon=${lon}`),
 
+    //keep
     speechAnalyze(file) {
         const fd = new FormData();
         fd.append("file", file, file?.name || "audio.wav");

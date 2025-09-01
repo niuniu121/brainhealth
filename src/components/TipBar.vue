@@ -179,7 +179,7 @@ onMounted(loadTip);
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
-/* PM2.5 颜色 */
+
 .pm25-good {
   background: rgba(46, 204, 113, 0.25);
   border-color: rgba(46, 204, 113, 0.35);
