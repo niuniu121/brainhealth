@@ -68,7 +68,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 140px 20px 60px;
+  padding: 80px 20px 60px;
   text-align: center;
   max-width: 1400px;
   margin: 0 auto;
