@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { api } from "@/api";
 
 const text = ref("Loading…");
 const loading = ref(true);
@@ -11,11 +12,11 @@ const uvIndex = ref(null);
 const PM25 = { good: 12, moderate: 35 };
 const UV = { low: 2, moderate: 5, high: 7, veryhigh: 10 };
 
-async function getJSON(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
-}
+// async function getJSON(url) {
+//   const r = await fetch(url);
+//   if (!r.ok) throw new Error(await r.text());
+//   return r.json();
+// }
 
 function pickAvgLast(series, n = 3) {
   if (!Array.isArray(series) || !series.length) return null;
@@ -100,9 +101,9 @@ async function loadTip() {
     const lon = coords?.longitude ?? 144.9631;
 
     const [aq, dl, wx] = await Promise.all([
-      getJSON(`/api/air-quality?lat=${lat}&lon=${lon}`),
-      getJSON(`/api/daylight?lat=${lat}&lon=${lon}`),
-      getJSON(`/api/open-meteo?lat=${lat}&lon=${lon}`),
+      api.airQuality(lat, lon),
+      api.daylight(lat, lon),
+      api.openMeteo(lat, lon),
     ]);
 
     const aqHourly = aq?.data?.hourly ?? aq?.hourly ?? {};
