@@ -9,14 +9,9 @@ const loading = ref(true);
 const pm25 = ref(null);
 const uvIndex = ref(null);
 
+// thresholds
 const PM25 = { good: 12, moderate: 35 };
 const UV = { low: 2, moderate: 5, high: 7, veryhigh: 10 };
-
-// async function getJSON(url) {
-//   const r = await fetch(url);
-//   if (!r.ok) throw new Error(await r.text());
-//   return r.json();
-// }
 
 function pickAvgLast(series, n = 3) {
   if (!Array.isArray(series) || !series.length) return null;
@@ -25,10 +20,11 @@ function pickAvgLast(series, n = 3) {
   return arr.reduce((a, b) => a + b, 0) / arr.length;
 }
 
+// sunset/rise Morning / Afternoon / Evening
 function daylightPhase(daily) {
   try {
-    const sunrise = new Date(daily.sunrise?.[0]);
-    const sunset = new Date(daily.sunset?.[0]);
+    const sunrise = new Date(daily?.sunrise?.[0]);
+    const sunset = new Date(daily?.sunset?.[0]);
     const now = new Date();
     if (sunrise && now < new Date(sunrise.getTime() + 2 * 60 * 60 * 1000))
       return "Morning";
@@ -37,6 +33,72 @@ function daylightPhase(daily) {
   } catch {
     const h = new Date().getHours();
     return h < 11 ? "Morning" : h < 18 ? "Afternoon" : "Evening";
+  }
+}
+
+// average 3
+function computeUVFromWx(hourly, daily) {
+  try {
+    const time = hourly?.time ?? [];
+    const uv = hourly?.uv_index ?? [];
+    const clear = hourly?.uv_index_clear_sky ?? [];
+    const isDayArr = hourly?.is_day ?? [];
+
+    if (!time.length) return 0;
+
+    const now = new Date();
+    const from = new Date(now.getTime() - 2 * 3600_000);
+
+    let sunrise = null,
+      sunset = null;
+    try {
+      sunrise = daily?.sunrise?.[0] ? new Date(daily.sunrise[0]) : null;
+      sunset = daily?.sunset?.[0] ? new Date(daily.sunset[0]) : null;
+    } catch {}
+
+    const rows = time.map((t, i) => {
+      const ts = new Date(t);
+      let isDay = Number(isDayArr?.[i]) === 1;
+      if (!isDayArr?.length && sunrise && sunset) {
+        isDay = ts >= sunrise && ts <= sunset;
+      }
+      return {
+        t: ts,
+        uv: Number(uv?.[i]),
+        clear: Number(clear?.[i]),
+        isDay,
+      };
+    });
+
+    const window = rows.filter((r) => r.t >= from && r.t <= now);
+    const dayRows = window.filter((r) => r.isDay);
+
+    console.debug(
+      "[UV] window:",
+      window.length,
+      "day:",
+      dayRows.length,
+      "sample:",
+      dayRows.slice(-3)
+    );
+
+    if (!dayRows.length) return 0;
+
+    let vals = dayRows
+      .map((r) => r.uv)
+      .filter((v) => Number.isFinite(v) && v > 0);
+    if (!vals.length) {
+      vals = dayRows
+        .map((r) => r.clear)
+        .filter((v) => Number.isFinite(v) && v > 0);
+    }
+    if (!vals.length) return 0;
+
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    return Math.max(0, Number(avg.toFixed(1)));
+  } catch (e) {
+    console.warn("[UV] compute error:", e);
+    return 0;
   }
 }
 
@@ -58,27 +120,34 @@ const uvLevel = computed(() => {
   return "extreme";
 });
 
-function buildMessage({ phase }) {
+// rule:3 / 2 / 1  PM2.5 > 15 || UV ≥ 7 3min  // PM2.5 > 7 2 < UV < 7 2min //other 1min
+function getBreathingMinutes(pm25Value, uvValue) {
+  const p = Number(pm25Value);
+  const u = Number(uvValue);
+  if ((isFinite(p) && p > 15) || (isFinite(u) && u >= 7)) return 3;
+  if ((isFinite(p) && p > 7) || (isFinite(u) && u > 2 && u < 7)) return 2;
+  return 1;
+}
+
+//UV is very high; do it indoors || uvLevel === high , pm25Level === high ->conditions aren’t ideal (UV/air); gentle breath inside. ||moderate|| Low
+function buildMessage({ phase, minutes }) {
   if (["veryhigh", "extreme"].includes(uvLevel.value)) {
-    return `${phase} — UV is very high; do your 1-minute reset indoors.`;
+    return `${phase} — UV is very high; do your ${minutes}-minute reset indoors.`;
   }
   if (uvLevel.value === "high" || pm25Level.value === "high") {
-    return `${phase} — conditions aren’t ideal (UV/air); take a 1-minute gentle breath inside.`;
+    return `${phase} — conditions aren’t ideal (UV/air); take a ${minutes}-minute gentle breath inside.`;
   }
-
   if (uvLevel.value === "moderate" || pm25Level.value === "moderate") {
     const bits = [];
     if (uvLevel.value === "moderate") bits.push("UV is moderate");
     if (pm25Level.value === "moderate") bits.push("air is fair");
     const why = bits.join(" & ");
-    return `${phase} — ${why}; try a slow 1-minute breathing reset.`;
+    return `${phase} — ${why}; try a slow ${minutes}-minute breathing reset.`;
   }
-
   if (uvLevel.value === "low" && pm25Level.value === "good") {
-    return `${phase} — conditions are good; enjoy a calm 1-minute breathing reset.`;
+    return `${phase} — conditions are good; enjoy a calm ${minutes}-minute breathing reset.`;
   }
-
-  return `${phase} — give yourself a 1-minute breathing reset.`;
+  return `${phase} — give yourself a ${minutes}-minute breathing reset.`;
 }
 
 async function loadTip() {
@@ -102,22 +171,24 @@ async function loadTip() {
 
     const [aq, dl, wx] = await Promise.all([
       api.airQuality(lat, lon),
-      api.daylight(lat, lon),
-      api.openMeteo(lat, lon),
+      api.daylight(lat, lon), // rise/set
+      api.openMeteo(lat, lon), // UV（ uv_index, uv_index_clear_sky, is_day, time）
     ]);
 
+    // PM2.5/average 3 hours
     const aqHourly = aq?.data?.hourly ?? aq?.hourly ?? {};
     pm25.value = pickAvgLast(aqHourly.pm2_5, 3);
 
-    const wxHourly = wx?.data?.hourly ?? wx?.hourly ?? {};
-    uvIndex.value =
-      pickAvgLast(wxHourly.uv_index, 3) ??
-      pickAvgLast(wxHourly.uv_index_clear_sky, 3);
-
     const daily = dl?.data?.daily ?? dl?.daily ?? {};
-    const phase = daylightPhase(daily);
 
-    text.value = buildMessage({ phase });
+    // caculate UV
+    const hourly = wx?.hourly ?? {};
+    uvIndex.value = computeUVFromWx(hourly, daily);
+
+    // documents
+    const phase = daylightPhase(daily);
+    const minutes = getBreathingMinutes(pm25.value, uvIndex.value);
+    text.value = buildMessage({ phase, minutes });
   } catch (e) {
     console.warn("[TipBar] fallback:", e?.message || e);
     text.value = "Take a minute to breathe — a short reset helps focus.";
@@ -140,7 +211,7 @@ onMounted(loadTip);
           PM2.5: {{ Number(pm25).toFixed(0) }} µg/m³
         </span>
         <span class="chip" :class="`uv-${uvLevel}`" v-if="uvIndex !== null">
-          UV: {{ Number(uvIndex).toFixed(0) }}
+          UV: {{ Number(uvIndex).toFixed(1) }}
         </span>
       </div>
     </div>
@@ -180,7 +251,6 @@ onMounted(loadTip);
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
-
 .pm25-good {
   background: rgba(46, 204, 113, 0.25);
   border-color: rgba(46, 204, 113, 0.35);
@@ -193,7 +263,6 @@ onMounted(loadTip);
   background: rgba(231, 76, 60, 0.25);
   border-color: rgba(231, 76, 60, 0.35);
 }
-
 .uv-low {
   background: rgba(46, 204, 113, 0.25);
   border-color: rgba(46, 204, 113, 0.35);
