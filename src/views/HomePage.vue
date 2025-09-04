@@ -52,16 +52,9 @@ import TipBar from "@/components/TipBar.vue";
   min-height: 100vh;
   background: #325343;
   color: #fff;
+  overflow-x: hidden;
 }
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 50;
-  background: #325343;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
+
 .home-container {
   flex: 1;
   display: flex;
@@ -72,17 +65,21 @@ header {
   text-align: center;
   max-width: 1400px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
+
 .main-title {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 20px;
 }
+
 .subtitle {
   font-size: 1.8rem;
   margin-bottom: 60px;
   font-weight: 500;
 }
+
 .therapy-options {
   display: flex;
   justify-content: center;
@@ -92,6 +89,7 @@ header {
   max-width: 1600px;
   margin: 0 auto;
 }
+
 .therapy-card {
   background: #fff;
   color: #333;
@@ -104,15 +102,19 @@ header {
   display: flex;
   flex-direction: column;
 }
+
 .therapy-card:hover {
   transform: translateY(-12px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
+
 .therapy-card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  display: block;
 }
+
 .therapy-info {
   flex: 1;
   padding: 16px;
@@ -120,19 +122,97 @@ header {
   flex-direction: column;
   justify-content: center;
 }
+
 .therapy-info h3 {
   font-size: 1.4rem;
   margin-bottom: 8px;
   font-weight: 600;
 }
+
 .therapy-info p {
   font-size: 1rem;
   color: #555;
 }
+
 .helper-copy {
   width: 100%;
   text-align: center;
   margin-top: 16px;
   opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: calc(64px + env(safe-area-inset-top)) 16px 24px;
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .main-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    font-weight: 500;
+    opacity: 0.95;
+    text-align: left;
+  }
+
+  .therapy-options {
+    gap: 16px;
+    justify-content: stretch;
+  }
+
+  .therapy-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  .therapy-card img {
+    height: 160px;
+  }
+
+  .therapy-info {
+    padding: 14px;
+    align-items: flex-start;
+  }
+
+  .therapy-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .therapy-info p {
+    font-size: 0.95rem;
+  }
+
+  .helper-copy {
+    font-size: 0.95rem;
+    margin-top: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-container {
+    padding: calc(56px + env(safe-area-inset-top)) 12px 20px;
+  }
+  .main-title {
+    font-size: 1.7rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+  .therapy-card img {
+    height: 140px;
+  }
 }
 </style>
