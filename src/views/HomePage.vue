@@ -215,4 +215,77 @@ import TipBar from "@/components/TipBar.vue";
     height: 140px;
   }
 }
+
+/* —— Home 入口动画：整页淡入 —— */
+.home-page {
+  opacity: 0;
+  animation: pageFade 600ms ease-out forwards;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* animate */
+.main-title,
+.subtitle,
+.therapy-options > .therapy-card {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  filter: blur(2px);
+  will-change: transform, opacity, filter;
+  animation: riseIn 720ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.main-title {
+  animation-delay: 0.1s;
+}
+.subtitle {
+  animation-delay: 0.22s;
+}
+
+.therapy-options > .therapy-card:nth-child(1) {
+  animation-delay: 0.34s;
+}
+.therapy-options > .therapy-card:nth-child(2) {
+  animation-delay: 0.44s;
+}
+.therapy-options > .therapy-card:nth-child(3) {
+  animation-delay: 0.54s;
+}
+
+@keyframes riseIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page,
+  .main-title,
+  .subtitle,
+  .therapy-options > .therapy-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
 </style>

@@ -3,12 +3,14 @@ import HomePage from '../views/HomePage.vue'
 import BreathingSpace from '../views/BreathingSpace.vue';
 import FlipCards from '@/views/FlipCards.vue'
 import SpeechCheck from "@/views/SpeechCheck.vue";
+import CursorBuddyPage from "@/views/CursorBuddyPage.vue";
 
 const routes = [
     { path: '/', name: 'home', component: HomePage },
     { path: '/breathing', name: 'BreathingSpace', component: BreathingSpace },
     { path: '/flip-cards', name: 'FlipCards', component: FlipCards },
-    { path: "/speech-check", name: "speech-check", component: SpeechCheck }
+    { path: "/speech-check", name: "speech-check", component: SpeechCheck },
+    { path: "/cursor-buddy", name: "cursor-buddy", component: CursorBuddyPage },
 ]
 
 const router = createRouter({
