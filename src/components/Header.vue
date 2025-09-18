@@ -56,27 +56,28 @@ router.afterEach(() => {
       </button>
 
       <nav class="menu desktop" aria-label="Primary">
-        <div class="menu-item">
+        <!-- <div class="menu-item">
           <button class="menu-button" type="button">Services</button>
-          <!-- <div class="dropdown" role="menu">
-            <RouterLink class="dd-item" to="/MentalTestView">Mental</RouterLink>
-            <a class="dd-item" href="#">Health Course</a>
-          </div> -->
-        </div>
+          <div class="dropdown" role="menu">
+            <RouterLink class="dd-item" to="/ai-predict">
+              AI Predict</RouterLink
+            >
+          </div>
+        </div> -->
 
-        <div class="menu-item">
+        <!-- <div class="menu-item">
           <button class="menu-button" type="button">About</button>
-          <!-- <div class="dropdown" role="menu">
-            <a class="dd-item" href="/searchLocation">Description</a>
-          </div> -->
-        </div>
+          <div class="dropdown" role="menu">
+            <a class="dd-item" href="/about/health-insights">Description</a>
+          </div>
+        </div> -->
 
-        <div class="menu-item">
+        <!-- <div class="menu-item">
           <button class="menu-button" type="button">Communication</button>
-          <!-- <div class="dropdown" role="menu">
+          <div class="dropdown" role="menu">
             <RouterLink class="dd-item" to="/SharingView">Sharing</RouterLink>
-          </div> -->
-        </div>
+          </div>
+        </div> -->
 
         <button
           v-if="isAdmin"
@@ -122,7 +123,7 @@ router.afterEach(() => {
         </div>
 
         <ul class="m-list" role="menu">
-          <li class="m-item">
+          <!-- <li class="m-item">
             <button
               class="m-toggle"
               :aria-expanded="open.services"
@@ -132,25 +133,22 @@ router.afterEach(() => {
               <i :class="['chev', { open: open.services }]"></i>
             </button>
             <div class="m-sub" v-show="open.services">
-              <RouterLink
-                class="m-link"
-                to="/MentalTestView"
-                @click="closeMobile"
-                >Mental</RouterLink
+              <RouterLink class="m-link" to="/ai-predict" @click="closeMobile"
+                >AI Predict</RouterLink
               >
               <a class="m-link" href="#" @click="closeMobile">Health Course</a>
             </div>
-          </li>
+          </li> -->
 
           <li class="m-item">
-            <button
+            <!-- <button
               class="m-toggle"
               :aria-expanded="open.about"
               @click="toggle('about')"
             >
               About
               <i :class="['chev', { open: open.about }]"></i>
-            </button>
+            </button> -->
             <!-- <div class="m-sub" v-show="open.about">
               <a class="m-link" href="/searchLocation" @click="closeMobile"
                 >Description</a
@@ -158,7 +156,7 @@ router.afterEach(() => {
             </div> -->
           </li>
 
-          <li class="m-item">
+          <!-- <li class="m-item">
             <button
               class="m-toggle"
               :aria-expanded="open.comm"
@@ -167,12 +165,12 @@ router.afterEach(() => {
               Communication
               <i :class="['chev', { open: open.comm }]"></i>
             </button>
-            <!-- <div class="m-sub" v-show="open.comm">
+            <div class="m-sub" v-show="open.comm">
               <RouterLink class="m-link" to="/SharingView" @click="closeMobile"
                 >Sharing</RouterLink
               >
-            </div> -->
-          </li>
+            </div>
+          </li> -->
 
           <li v-if="isAdmin" class="m-item">
             <button class="m-link strong" @click="toAdmin">Management</button>

@@ -41,11 +41,38 @@ onBeforeUnmount(() => {
       <h2 class="subtitle">Choose a way to restore your mind</h2>
 
       <div class="therapy-options">
+        <router-link to="/ai-predict" class="therapy-card">
+          <img src="../assets/imgs/home3.png" alt="AI Predict" />
+          <div class="therapy-info">
+            <h3>AI Predict</h3>
+            <p>Personalized insights and recommendations</p>
+          </div>
+        </router-link>
+
+        <router-link
+          to="/about/health-insights"
+          class="therapy-card insights-card"
+        >
+          <img src="@/assets/imgs/home4.png" alt="Health Insights" />
+          <div class="therapy-info">
+            <h3>Health Insights</h3>
+            <p>Evidence-based notes on risks & wellbeing</p>
+          </div>
+        </router-link>
+
         <router-link to="/breathing" class="therapy-card">
           <img src="@/assets/imgs/home.png" alt="Breathing Space" />
           <div class="therapy-info">
             <h3>Breathing Space</h3>
             <p>Follow the rhythm and release stress</p>
+          </div>
+        </router-link>
+
+        <router-link to="/flip-cards" class="therapy-card">
+          <img src="@/assets/imgs/home2.png" alt="Positive Flip Cards" />
+          <div class="therapy-info">
+            <h3>Positive Flip Cards</h3>
+            <p>Turn negative thoughts into positive ones</p>
           </div>
         </router-link>
 
@@ -73,14 +100,6 @@ onBeforeUnmount(() => {
             <small class="hint">Tap or hover to preview</small>
           </div>
         </div>
-
-        <router-link to="/flip-cards" class="therapy-card">
-          <img src="@/assets/imgs/home2.png" alt="Positive Flip Cards" />
-          <div class="therapy-info">
-            <h3>Positive Flip Cards</h3>
-            <p>Turn negative thoughts into positive ones</p>
-          </div>
-        </router-link>
 
         <div class="helper-copy">
           Not sure where to start? Just pick the one you feel like today.
