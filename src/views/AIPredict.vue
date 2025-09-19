@@ -291,11 +291,11 @@ async function onPredictFile() {
       </div>
     </div>
 
-    <div v-if="!hasResult && !loading && !error" class="empty">
+    <!-- <div v-if="!hasResult && !loading && !error" class="empty">
       <div class="empty-text muted">
         Fill the form or upload a sheet to see your estimate.
       </div>
-    </div>
+    </div> -->
 
     <div v-if="loading" class="loading-banner">Working on it…</div>
   </section>
