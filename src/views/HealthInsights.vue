@@ -87,8 +87,8 @@ function applyLimit() {
       </div>
       <h1 class="title">Evidence-style notes on health & wellbeing</h1>
       <p class="sub">
-        Search structured notes about health — features, risks, symptoms and
-        practical precautions.
+        Search structured notes about health — you can use keywords about sleep,
+        anxiety
       </p>
     </header>
 
