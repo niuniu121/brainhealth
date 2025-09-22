@@ -87,8 +87,8 @@ function applyLimit() {
       </div>
       <h1 class="title">Evidence-style notes on health & wellbeing</h1>
       <p class="sub">
-        Search structured notes about mobile phone usage & health — features,
-        risks, symptoms and practical precautions.
+        Search structured notes about health — features, risks, symptoms and
+        practical precautions.
       </p>
     </header>
 
@@ -581,5 +581,32 @@ function applyLimit() {
   .grid {
     background-position: 0 0 !important;
   }
+}
+
+.insight-card {
+  background: #325343;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.insight-card .card-title,
+.insight-card .label,
+.insight-card .body,
+.insight-card .lead {
+  color: #fff;
+}
+
+.insight-card .tag {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.insight-card.card:hover {
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28), 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.insight-card .split,
+.insight-card .mt {
 }
 </style>
