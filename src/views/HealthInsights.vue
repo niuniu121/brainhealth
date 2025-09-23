@@ -88,7 +88,7 @@ function applyLimit() {
       <h1 class="title">Evidence-style notes on health & wellbeing</h1>
       <p class="sub">
         Search structured notes about health — you can use keywords about sleep,
-        anxiety
+        anxiety,fitness,e
       </p>
     </header>
 
@@ -204,7 +204,7 @@ function applyLimit() {
         </svg>
       </div>
       <p class="muted">
-        Try another keyword, e.g. <b>sleep</b>, <b>anxiety</b>.
+        Try another keyword, e.g. <b>sleep</b>, <b>anxiety</b>, <b>fitness</b>.
       </p>
     </div>
   </section>
