@@ -41,15 +41,15 @@ onBeforeUnmount(() => {
       <h2 class="subtitle">Choose a way to restore your mind</h2>
 
       <div class="therapy-options">
-        <!-- <router-link to="/ai-predict" class="therapy-card">
+        <router-link to="/ai-predict" class="therapy-card">
           <img src="../assets/imgs/home3.png" alt="AI Predict" />
           <div class="therapy-info">
             <h3>AI Predict</h3>
             <p>Personalized insights and recommendations</p>
           </div>
-        </router-link> -->
+        </router-link>
 
-        <!-- <router-link
+        <router-link
           to="/about/health-insights"
           class="therapy-card insights-card"
         >
@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
             <h3>Health Insights</h3>
             <p>Evidence-based notes on risks & wellbeing</p>
           </div>
-        </router-link> -->
+        </router-link>
 
         <router-link to="/breathing" class="therapy-card">
           <img src="@/assets/imgs/home.png" alt="Breathing Space" />
