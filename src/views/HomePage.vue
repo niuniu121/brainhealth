@@ -2,11 +2,14 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import Header from "@/components/Header.vue";
 import TipBar from "@/components/TipBar.vue";
+import MHAD from "@/assets/gif/MentalHealth.gif";
+import Breath from "@/assets/gif/CalmBreath.gif";
+import Location from "@/assets/gif/Location.gif";
+import Brain from "@/assets/gif/Brain.gif";
 
 const moodCardRef = ref(null);
 let hideTimer;
 
-/* tap to reveal overlay on touch devices */
 function revealOnTouch() {
   const el = moodCardRef.value;
   if (!el) return;
@@ -37,12 +40,16 @@ onBeforeUnmount(() => {
     <TipBar />
 
     <main class="home-container">
+      <!-- <div class="mhad-banner">
+        <img :src="MHAD" alt="Mental Health Action Day" />
+      </div> -->
       <h1 class="main-title">Find Your Calm Today</h1>
       <h2 class="subtitle">Choose a way to restore your mind</h2>
 
       <div class="therapy-options">
         <router-link to="/ai-predict" class="therapy-card">
-          <img src="../assets/imgs/home3.png" alt="AI Predict" />
+          <!-- <img src="../assets/imgs/home3.png" alt="AI Predict" /> -->
+          <img :src="Brain" alt="AI Predict" />
           <div class="therapy-info">
             <h3>AI Predict</h3>
             <p>Personalized insights and recommendations</p>
@@ -53,7 +60,8 @@ onBeforeUnmount(() => {
           to="/about/health-insights"
           class="therapy-card insights-card"
         >
-          <img src="@/assets/imgs/home4.png" alt="Health Insights" />
+          <!-- <img src="@/assets/imgs/home4.png" alt="Health Insights" /> -->
+          <img :src="Location" alt="Health Insights" />
           <div class="therapy-info">
             <h3>Health Insights</h3>
             <p>Evidence-based notes on risks & wellbeing</p>
@@ -61,7 +69,9 @@ onBeforeUnmount(() => {
         </router-link>
 
         <router-link to="/breathing" class="therapy-card">
-          <img src="@/assets/imgs/home.png" alt="Breathing Space" />
+          <!-- <img src="@/assets/imgs/home.png" alt="Breathing Space" /> -->
+          <img :src="Breath" alt="Breathing Space" />
+
           <div class="therapy-info">
             <h3>Breathing Space</h3>
             <p>Follow the rhythm and release stress</p>
@@ -73,6 +83,14 @@ onBeforeUnmount(() => {
           <div class="therapy-info">
             <h3>Positive Flip Cards</h3>
             <p>Turn negative thoughts into positive ones</p>
+          </div>
+        </router-link>
+
+        <router-link to="/metrics" class="therapy-card">
+          <img src="@/assets/imgs/trend.png" alt="Positive Flip Cards" />
+          <div class="therapy-info">
+            <h3>Mind Observatory</h3>
+            <p>Let data speak</p>
           </div>
         </router-link>
 
@@ -125,7 +143,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px 60px;
+  padding: 20px 20px 60px;
   text-align: center;
   max-width: 1400px;
   margin: 0 auto;
@@ -207,12 +225,10 @@ onBeforeUnmount(() => {
   opacity: 0.9;
 }
 
-/* —— Coming soon overlay —— */
 .is-disabled {
   cursor: default;
 }
 .is-disabled::after {
-  /* subtle vignette on hover/focus/touch */
   content: "";
   position: absolute;
   inset: 0;
@@ -261,7 +277,6 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 .is-disabled .pill::before {
-  /* gentle shimmer */
   content: "";
   position: absolute;
   inset: 0;
@@ -311,7 +326,6 @@ onBeforeUnmount(() => {
   font-size: 0.9rem;
 }
 
-/* reveal triggers */
 .is-disabled:hover::after,
 .is-disabled:focus-visible::after,
 .is-disabled.touch-reveal::after {
@@ -324,13 +338,11 @@ onBeforeUnmount(() => {
   transform: translateY(0) scale(1);
 }
 
-/* disable link-like hover lift for disabled card */
 .is-disabled:hover {
   transform: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* —— Responsive —— */
 @media (max-width: 768px) {
   .home-container {
     padding: calc(64px + env(safe-area-inset-top)) 16px 24px;
@@ -397,7 +409,6 @@ onBeforeUnmount(() => {
   }
 }
 
-/* Page entrance animation */
 .home-page {
   opacity: 0;
   animation: pageFade 600ms ease-out forwards;
@@ -492,5 +503,49 @@ onBeforeUnmount(() => {
 .is-disabled.touch-reveal .coming-soon {
   opacity: 1 !important;
   transform: translateY(0) scale(1) !important;
+}
+.mhad-banner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 18px auto 10px;
+  padding: 14px;
+  max-width: 1200px;
+  background: #fff;
+  border: 1px solid rgba(17, 37, 31, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 12px 26px rgba(12, 24, 20, 0.18);
+  background: radial-gradient(
+      120% 120% at 10% 0%,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.06) 40%,
+      rgba(255, 255, 255, 0.04) 60%,
+      transparent 70%
+    ),
+    rgba(255, 255, 255, 0.1);
+}
+.mhad-banner img {
+  width: 220px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.mhad-text h3 {
+  margin: 0 0 6px;
+  color: #1b332b;
+}
+.mhad-text p {
+  margin: 0;
+  color: #5a746b;
+}
+@media (max-width: 680px) {
+  .mhad-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .mhad-banner img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>

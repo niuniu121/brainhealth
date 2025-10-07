@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import Header from "@/components/Header.vue";
 import api from "@/api";
+import Breath from "@/assets/gif/CalmBreath.gif";
 
 const props = defineProps({
   theme: { type: String, default: "dark" },
@@ -192,15 +193,7 @@ const presetActiveRing = computed(() =>
   <div :class="pageWrapClass" class="breath-page premium-bg premium-emerald">
     <Header />
     <section class="mx-auto max-w-3xl px-6 py-10 text-center select-none">
-      <h1
-        class="breath-title"
-        :class="[
-          'text-3xl md:text-4xl font-bold',
-          isDark ? 'text-white/95' : 'text-slate-900',
-        ]"
-      >
-        Breathing Space
-      </h1>
+      <img :src="Breath" />
       <p class="breath-sub mt-2" :class="subTextClass">
         Follow the rhythm: Inhale • Hold • Exhale
       </p>

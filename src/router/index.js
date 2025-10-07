@@ -5,6 +5,7 @@ import FlipCards from "@/views/FlipCards.vue";
 import SpeechCheck from "@/views/SpeechCheck.vue";
 import CursorBuddyPage from "@/views/CursorBuddyPage.vue";
 import AIPredict from "@/views/AIPredict.vue";
+import MetricsDashboard from "../views/MetricsDashboard.vue";
 
 const routes = [
     { path: "/", name: "home", component: HomePage },
@@ -19,6 +20,11 @@ const routes = [
         component: () => import("../views/HealthInsights.vue"),
         meta: { title: "Health Insights" },
     },
+    {
+        path: "/metrics",
+        name: "MetricsDashboard",
+        component: () => import("@/views/MetricsDashboard.vue"),
+    }
 ];
 
 const router = createRouter({
