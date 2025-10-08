@@ -2,14 +2,29 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import Header from "@/components/Header.vue";
 import TipBar from "@/components/TipBar.vue";
+
 import MHAD from "@/assets/gif/MentalHealth.gif";
 import Breath from "@/assets/gif/CalmBreath.gif";
 import Location from "@/assets/gif/Location.gif";
 import Brain from "@/assets/gif/Brain.gif";
+import Data from "@/assets/gif/Data.gif";
+import Dance from "@/assets/gif/Dance.gif";
+
+/** Swiper */
+import { Swiper, SwiperSlide } from "swiper/vue";
+import {
+  Navigation,
+  Pagination,
+  Autoplay,
+  Keyboard,
+  A11y,
+} from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const moodCardRef = ref(null);
 let hideTimer;
-
 function revealOnTouch() {
   const el = moodCardRef.value;
   if (!el) return;
@@ -17,14 +32,12 @@ function revealOnTouch() {
   clearTimeout(hideTimer);
   hideTimer = setTimeout(() => el.classList.remove("touch-reveal"), 1500);
 }
-
 onMounted(() => {
   const el = moodCardRef.value;
   if (!el) return;
   el.addEventListener("click", revealOnTouch, { passive: true });
   el.addEventListener("touchstart", revealOnTouch, { passive: true });
 });
-
 onBeforeUnmount(() => {
   const el = moodCardRef.value;
   if (!el) return;
@@ -32,6 +45,16 @@ onBeforeUnmount(() => {
   el.removeEventListener("touchstart", revealOnTouch);
   clearTimeout(hideTimer);
 });
+
+/** Swiper 配置 */
+const modules = [Navigation, Pagination, Autoplay, Keyboard, A11y];
+const breakpoints = {
+  0: { slidesPerView: 1, spaceBetween: 14, centeredSlides: true },
+  640: { slidesPerView: 1.2, spaceBetween: 18, centeredSlides: true },
+  768: { slidesPerView: 2, spaceBetween: 22, centeredSlides: false },
+  1024: { slidesPerView: 3, spaceBetween: 26 },
+  1400: { slidesPerView: 3, spaceBetween: 30 },
+};
 </script>
 
 <template>
@@ -43,91 +66,96 @@ onBeforeUnmount(() => {
       <!-- <div class="mhad-banner">
         <img :src="MHAD" alt="Mental Health Action Day" />
       </div> -->
+
       <h1 class="main-title">Find Your Calm Today</h1>
       <h2 class="subtitle">Choose a way to restore your mind</h2>
 
-      <div class="therapy-options">
-        <router-link to="/ai-predict" class="therapy-card">
-          <!-- <img src="../assets/imgs/home3.png" alt="AI Predict" /> -->
-          <img :src="Brain" alt="AI Predict" />
-          <div class="therapy-info">
-            <h3>AI Predict</h3>
-            <p>Personalized insights and recommendations</p>
-          </div>
-        </router-link>
+      <!-- Swiper 轮播区 -->
+      <Swiper
+        class="therapy-swiper"
+        :modules="modules"
+        :loop="true"
+        :autoplay="{ delay: 3800, disableOnInteraction: false }"
+        :pagination="{ clickable: true, dynamicBullets: true }"
+        :navigation="true"
+        :keyboard="{ enabled: true, onlyInViewport: true }"
+        :breakpoints="breakpoints"
+        aria-label="Therapy modules carousel"
+      >
+        <SwiperSlide>
+          <router-link to="/ai-predict" class="therapy-card">
+            <img :src="Brain" alt="AI Predict" />
+            <div class="therapy-info">
+              <h3>AI Predict</h3>
+              <p>Personalized insights and recommendations</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
 
-        <router-link
-          to="/about/health-insights"
-          class="therapy-card insights-card"
-        >
-          <!-- <img src="@/assets/imgs/home4.png" alt="Health Insights" /> -->
-          <img :src="Location" alt="Health Insights" />
-          <div class="therapy-info">
-            <h3>Health Insights</h3>
-            <p>Evidence-based notes on risks & wellbeing</p>
-          </div>
-        </router-link>
+        <SwiperSlide>
+          <router-link
+            to="/about/health-insights"
+            class="therapy-card insights-card"
+          >
+            <img :src="Location" alt="Health Insights" />
+            <div class="therapy-info">
+              <h3>Health Insights</h3>
+              <p>Evidence-based notes on risks & wellbeing</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
 
-        <router-link to="/breathing" class="therapy-card">
-          <!-- <img src="@/assets/imgs/home.png" alt="Breathing Space" /> -->
-          <img :src="Breath" alt="Breathing Space" />
+        <SwiperSlide>
+          <router-link to="/breathing" class="therapy-card">
+            <img :src="Breath" alt="Breathing Space" />
+            <div class="therapy-info">
+              <h3>Breathing Space</h3>
+              <p>Follow the rhythm and release stress</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
 
-          <div class="therapy-info">
-            <h3>Breathing Space</h3>
-            <p>Follow the rhythm and release stress</p>
-          </div>
-        </router-link>
+        <SwiperSlide>
+          <router-link to="/flip-cards" class="therapy-card">
+            <img src="@/assets/imgs/home2.png" alt="Positive Flip Cards" />
+            <div class="therapy-info">
+              <h3>Positive Flip Cards</h3>
+              <p>Turn negative thoughts into positive ones</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
 
-        <router-link to="/flip-cards" class="therapy-card">
-          <img src="@/assets/imgs/home2.png" alt="Positive Flip Cards" />
-          <div class="therapy-info">
-            <h3>Positive Flip Cards</h3>
-            <p>Turn negative thoughts into positive ones</p>
-          </div>
-        </router-link>
+        <SwiperSlide>
+          <router-link to="/metrics" class="therapy-card">
+            <img :src="Data" alt="Mind Observatory" />
+            <div class="therapy-info">
+              <h3>Mind Observatory</h3>
+              <p>Let data speak</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
 
-        <router-link to="/metrics" class="therapy-card">
-          <img src="@/assets/imgs/trend.png" alt="Positive Flip Cards" />
-          <div class="therapy-info">
-            <h3>Mind Observatory</h3>
-            <p>Let data speak</p>
-          </div>
-        </router-link>
+        <SwiperSlide>
+          <router-link to="/metrics" class="therapy-card">
+            <img :src="Dance" alt="Mood Collage" />
+            <div class="therapy-info">
+              <h3>Mood Collage</h3>
+              <p>Listening music</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
+      </Swiper>
 
-        <!-- Disabled / Coming soon card -->
-        <div
-          ref="moodCardRef"
-          class="therapy-card is-disabled"
-          tabindex="0"
-          role="button"
-          aria-disabled="true"
-          aria-label="Mood Collage coming soon"
-        >
-          <img src="@/assets/imgs/home1.png" alt="Mood Collage (coming soon)" />
-          <div class="therapy-info">
-            <h3>Mood Collage</h3>
-            <p>Express your feelings with colors</p>
-          </div>
-
-          <!-- overlay -->
-          <div class="coming-soon" aria-hidden="true">
-            <span class="pill">
-              <span class="dot"></span>
-              Coming&nbsp;soon…
-            </span>
-            <small class="hint">Tap or hover to preview</small>
-          </div>
-        </div>
-
-        <div class="helper-copy">
-          Not sure where to start? Just pick the one you feel like today.
-        </div>
+      <div class="helper-copy">
+        Not sure where to start? Just pick the one you feel like today.
       </div>
     </main>
   </div>
 </template>
 
 <style scoped>
+/* —— 你的原有样式基础上稍作调整以适配 Swiper —— */
+
 .home-page {
   display: flex;
   flex-direction: column;
@@ -135,6 +163,16 @@ onBeforeUnmount(() => {
   background: #325343;
   color: #fff;
   overflow-x: hidden;
+  opacity: 0;
+  animation: pageFade 600ms ease-out forwards;
+}
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .home-container {
@@ -149,36 +187,46 @@ onBeforeUnmount(() => {
   margin: 0 auto;
   overflow-x: hidden;
 }
-
 .main-title {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 20px;
 }
-
 .subtitle {
   font-size: 1.8rem;
-  margin-bottom: 60px;
+  margin-bottom: 28px;
   font-weight: 500;
 }
 
-.therapy-options {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
+/* —— Swiper 容器 —— */
+.therapy-swiper {
   width: 100%;
   max-width: 1600px;
-  margin: 0 auto;
+  padding: 10px 12px 36px;
 }
 
+/* Swiper 导航按钮微调（可按需自定义） */
+:deep(.swiper-button-prev),
+:deep(.swiper-button-next) {
+  color: #ffffff;
+  --swiper-navigation-size: 26px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+:deep(.swiper-pagination-bullet) {
+  background: rgba(255, 255, 255, 0.6);
+}
+:deep(.swiper-pagination-bullet-active) {
+  background: #ffffff;
+}
+
+/* —— 卡片 —— */
 .therapy-card {
   position: relative;
   background: #fff;
   color: #333;
   border-radius: 12px;
   overflow: hidden;
-  width: 420px;
+  width: 100%;
   height: 350px;
   transition: 0.3s;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -186,19 +234,16 @@ onBeforeUnmount(() => {
   flex-direction: column;
   outline: none;
 }
-
 .therapy-card:hover {
   transform: translateY(-12px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
-
 .therapy-card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   display: block;
 }
-
 .therapy-info {
   flex: 1;
   padding: 16px;
@@ -206,13 +251,11 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
 }
-
 .therapy-info h3 {
   font-size: 1.4rem;
   margin-bottom: 8px;
   font-weight: 600;
 }
-
 .therapy-info p {
   font-size: 1rem;
   color: #555;
@@ -221,160 +264,29 @@ onBeforeUnmount(() => {
 .helper-copy {
   width: 100%;
   text-align: center;
-  margin-top: 16px;
+  margin-top: 10px;
   opacity: 0.9;
-}
-
-.is-disabled {
-  cursor: default;
-}
-.is-disabled::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-      120% 80% at 50% 10%,
-      rgba(0, 0, 0, 0) 30%,
-      rgba(0, 0, 0, 0.35) 100%
-    ),
-    linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.45) 100%);
-  opacity: 0;
-  transition: opacity 260ms ease;
-  pointer-events: none;
-}
-.is-disabled .coming-soon {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  gap: 10px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(8px) scale(0.98);
-  transition: opacity 280ms ease,
-    transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  pointer-events: none;
-}
-
-.is-disabled .pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(230, 240, 236, 0.92)
-  );
-  color: #1f3a2f;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
-  position: relative;
-  overflow: hidden;
-}
-.is-disabled .pill::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-120%);
-  background: linear-gradient(
-    100deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.7) 50%,
-    transparent 70%
-  );
-  animation: shimmer 2.2s infinite;
-}
-@keyframes shimmer {
-  0% {
-    transform: translateX(-120%);
-  }
-  60% {
-    transform: translateX(120%);
-  }
-  100% {
-    transform: translateX(120%);
-  }
-}
-
-.is-disabled .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f6e54;
-  animation: pulse 1.4s infinite ease-in-out;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 1;
-  }
-}
-
-.is-disabled .hint {
-  color: #eaf5ef;
-  opacity: 0.9;
-  font-size: 0.9rem;
-}
-
-.is-disabled:hover::after,
-.is-disabled:focus-visible::after,
-.is-disabled.touch-reveal::after {
-  opacity: 1;
-}
-.is-disabled:hover .coming-soon,
-.is-disabled:focus-visible .coming-soon,
-.is-disabled.touch-reveal .coming-soon {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.is-disabled:hover {
-  transform: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 768px) {
   .home-container {
-    padding: calc(64px + env(safe-area-inset-top)) 16px 24px;
-    align-items: stretch;
-    text-align: left;
+    padding: calc(64px + env(safe-area-inset-top)) 12px 24px;
   }
   .main-title {
     font-size: 2rem;
-    line-height: 1.2;
     margin-bottom: 12px;
-    text-align: left;
+    text-align: center;
   }
   .subtitle {
     font-size: 1.1rem;
-    margin-bottom: 24px;
-    font-weight: 500;
-    opacity: 0.95;
-    text-align: left;
-  }
-  .therapy-options {
-    gap: 16px;
-    justify-content: stretch;
+    margin-bottom: 18px;
+    text-align: center;
   }
   .therapy-card {
-    width: 100%;
-    max-width: 100%;
     height: auto;
-    border-radius: 16px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
   }
   .therapy-card img {
-    height: 160px;
+    height: 170px;
   }
   .therapy-info {
     padding: 14px;
@@ -387,43 +299,12 @@ onBeforeUnmount(() => {
   .therapy-info p {
     font-size: 0.95rem;
   }
-  .helper-copy {
-    font-size: 0.95rem;
-    margin-top: 8px;
-    text-align: center;
-  }
 }
 
-@media (max-width: 360px) {
-  .home-container {
-    padding: calc(56px + env(safe-area-inset-top)) 12px 20px;
-  }
-  .main-title {
-    font-size: 1.7rem;
-  }
-  .subtitle {
-    font-size: 1rem;
-  }
-  .therapy-card img {
-    height: 140px;
-  }
-}
-
-.home-page {
-  opacity: 0;
-  animation: pageFade 600ms ease-out forwards;
-}
-@keyframes pageFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* 可选：进入动画 */
 .main-title,
 .subtitle,
-.therapy-options > .therapy-card {
+:deep(.swiper) {
   opacity: 0;
   transform: translateY(12px) scale(0.98);
   filter: blur(2px);
@@ -436,14 +317,8 @@ onBeforeUnmount(() => {
 .subtitle {
   animation-delay: 0.22s;
 }
-.therapy-options > .therapy-card:nth-child(1) {
+:deep(.swiper) {
   animation-delay: 0.34s;
-}
-.therapy-options > .therapy-card:nth-child(2) {
-  animation-delay: 0.44s;
-}
-.therapy-options > .therapy-card:nth-child(3) {
-  animation-delay: 0.54s;
 }
 @keyframes riseIn {
   0% {
@@ -466,86 +341,11 @@ onBeforeUnmount(() => {
   .home-page,
   .main-title,
   .subtitle,
-  .therapy-options > .therapy-card {
+  :deep(.swiper) {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
-  }
-}
-
-.therapy-card {
-  transform: translateY(0) !important;
-  transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 260ms ease !important;
-  will-change: transform, box-shadow;
-}
-
-.therapy-card:hover,
-.therapy-card:focus-within {
-  transform: translateY(-12px) !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
-}
-
-.is-disabled:hover,
-.is-disabled:focus-within {
-  transform: translateY(-12px) !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
-}
-
-.is-disabled:hover::after,
-.is-disabled:focus-visible::after,
-.is-disabled.touch-reveal::after {
-  opacity: 1 !important;
-}
-.is-disabled:hover .coming-soon,
-.is-disabled:focus-visible .coming-soon,
-.is-disabled.touch-reveal .coming-soon {
-  opacity: 1 !important;
-  transform: translateY(0) scale(1) !important;
-}
-.mhad-banner {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin: 18px auto 10px;
-  padding: 14px;
-  max-width: 1200px;
-  background: #fff;
-  border: 1px solid rgba(17, 37, 31, 0.1);
-  border-radius: 18px;
-  box-shadow: 0 12px 26px rgba(12, 24, 20, 0.18);
-  background: radial-gradient(
-      120% 120% at 10% 0%,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.06) 40%,
-      rgba(255, 255, 255, 0.04) 60%,
-      transparent 70%
-    ),
-    rgba(255, 255, 255, 0.1);
-}
-.mhad-banner img {
-  width: 220px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-.mhad-text h3 {
-  margin: 0 0 6px;
-  color: #1b332b;
-}
-.mhad-text p {
-  margin: 0;
-  color: #5a746b;
-}
-@media (max-width: 680px) {
-  .mhad-banner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .mhad-banner img {
-    width: 100%;
-    height: auto;
   }
 }
 </style>
