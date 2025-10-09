@@ -6,6 +6,7 @@ import SpeechCheck from "@/views/SpeechCheck.vue";
 import CursorBuddyPage from "@/views/CursorBuddyPage.vue";
 import AIPredict from "@/views/AIPredict.vue";
 import MetricsDashboard from "../views/MetricsDashboard.vue";
+import GameView from "../views/GameView.vue";
 
 const routes = [
     { path: "/", name: "home", component: HomePage },
@@ -24,7 +25,13 @@ const routes = [
         path: "/metrics",
         name: "MetricsDashboard",
         component: () => import("@/views/MetricsDashboard.vue"),
+    },
+    {
+        path: "/game",
+        name: "Game",
+        component: () => import("@/views/GameView.vue"),
     }
+
 ];
 
 const router = createRouter({

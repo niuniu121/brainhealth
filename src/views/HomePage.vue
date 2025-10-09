@@ -9,6 +9,7 @@ import Location from "@/assets/gif/Location.gif";
 import Brain from "@/assets/gif/Brain.gif";
 import Data from "@/assets/gif/Data.gif";
 import Dance from "@/assets/gif/Dance.gif";
+import Game from "@/assets/gif/Game.gif";
 
 /** Swiper */
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -141,6 +142,16 @@ const breakpoints = {
             <div class="therapy-info">
               <h3>Mood Collage</h3>
               <p>Listening music</p>
+            </div>
+          </router-link>
+        </SwiperSlide>
+
+        <SwiperSlide>
+          <router-link to="/game" class="therapy-card">
+            <img :src="Game" alt="Mind Game" />
+            <div class="therapy-info">
+              <h3>Mind Game</h3>
+              <p>Train focus and relax with fun interactions</p>
             </div>
           </router-link>
         </SwiperSlide>
