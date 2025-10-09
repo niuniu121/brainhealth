@@ -137,7 +137,7 @@ const breakpoints = {
         </SwiperSlide>
 
         <SwiperSlide>
-          <router-link to="/metrics" class="therapy-card">
+          <router-link to="/music" class="therapy-card">
             <img :src="Dance" alt="Mood Collage" />
             <div class="therapy-info">
               <h3>Mood Collage</h3>

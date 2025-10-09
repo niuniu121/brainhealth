@@ -12,7 +12,7 @@ const activeTab = ref("lines"); // 'lines' | 'stroop'
   <div class="game-page">
     <header class="hero">
       <h1>Mind Games</h1>
-      <p class="sub">Train focus, learn coping skills, and have fun ✨</p>
+      <p class="sub">Train focus, learn coping skills, and have fun</p>
 
       <nav class="tabs" role="tablist" aria-label="Mind games">
         <button

@@ -237,7 +237,6 @@ const screenChart = computed(() => {
   --accent-2: #1aa27c; /* 渐变尾色 */
 }
 
-/* 页面背景：深绿渐层 + 顶部柔光 */
 .metrics-page {
   min-height: 100vh;
   position: relative;
@@ -252,7 +251,6 @@ const screenChart = computed(() => {
   background: #325343;
 }
 
-/* 背景粒子（轻微漂浮，和站点风格一致） */
 .bg-particles {
   position: absolute;
   inset: 0;

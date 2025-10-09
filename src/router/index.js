@@ -30,8 +30,12 @@ const routes = [
         path: "/game",
         name: "Game",
         component: () => import("@/views/GameView.vue"),
+    },
+    {
+        path: '/music',
+        name: 'Music',
+        component: () => import('@/views/MusicView.vue')
     }
-
 ];
 
 const router = createRouter({
