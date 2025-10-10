@@ -173,8 +173,8 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKey));
         </button>
       </div>
       <p class="note">
-        Select the <b>font color</b> (not the word meaning). 键盘快捷键：A / S /
-        D / F / J / K
+        Select the <b>font color</b> (not the word meaning). keyboard
+        shortcut：A / S / D / F / J / K
       </p>
     </div>
 
